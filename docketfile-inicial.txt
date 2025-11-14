@@ -1,0 +1,55 @@
+FROM php:8.3-apache
+
+# Instalar dependências
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libicu-dev \
+    zip \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install mysqli pdo pdo_mysql \
+    && docker-php-ext-install intl \
+    && a2enmod rewrite
+
+# Copiar configuração do Apache
+COPY . /var/www/html
+
+# Configurar permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+RUN a2enmod rewrite
+
+# Configuração do Apache
+COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# Expor a porta 80
+EXPOSE 80
+
+
+en consola
+//FUNCIONO CON ESTOS PERMISOS
+docker exec -it codeigniter4-web /bin/bash
+chown -R www-data:www-data /var/www/html/writable
+chmod -R 755 /var/www/html/writable
+mkdir -p /var/www/html/writable/logs  # Crear la carpeta logs si no existe
+chown -R www-data:www-data /var/www/html/writable/logs
+chmod -R 755 /var/www/html/writable/logs
+
+//no hizo falta
+Asegúrate de que tenga algo como esto:
+
+apache
+
+<VirtualHost *:80>
+    DocumentRoot /var/www/html/public
+
+    <Directory /var/www/html/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>

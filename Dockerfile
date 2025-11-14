@@ -16,15 +16,20 @@ RUN apt-get update && apt-get install -y \
 
 # Copiar configuração do Apache
 COPY . /var/www/html
+WORKDIR /var/www/html/public
 
 # Configurar permissões
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-# Configuração do Apache
-COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
+# Copia tu configuración de Apache (asegúrate de tener este archivo)
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+#COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Expor a porta 80
 EXPOSE 80
