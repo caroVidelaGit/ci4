@@ -1,6 +1,6 @@
 FROM php:8.3-apache
 
-# Instalar dependências
+# Instalar dependencias
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -14,22 +14,19 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install intl \
     && a2enmod rewrite
 
-# Copiar configuração do Apache
+# Copiar la aplicación al contenedor
 COPY . /var/www/html
 WORKDIR /var/www/html/public
 
-# Configurar permissões
+# Configurar permisos
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 755 /var/www/html
 
-
+# Establecer ServerName para suprimir advertencias
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-RUN a2enmod rewrite
+# Copia la configuración de Apache
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Copia tu configuración de Apache (asegúrate de tener este archivo)
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-#COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
-
-# Expor a porta 80
+# Exponer el puerto 80
 EXPOSE 80
