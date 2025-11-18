@@ -7,8 +7,6 @@ services:
     container_name: codeigniter-web
     ports:
       - "8080:80"
-    volumes:
-      - .:/var/www/html
     depends_on:
       - db
   
