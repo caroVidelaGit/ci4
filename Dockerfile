@@ -27,6 +27,6 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Copia la configuración de Apache
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
-
+RUN a2enmod rewrite
 # Exponer el puerto 80
 EXPOSE 80
