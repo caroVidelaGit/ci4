@@ -4,3 +4,5 @@ composer.lock
 writable/debugbar/
 writable/log/
 docker-compose-dev.yml
+rsa_clave_git
+rsa_clave_git.pub
