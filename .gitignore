@@ -3,3 +3,4 @@ vendor/
 composer.lock
 writable/debugbar/
 writable/log/
+docker-compose-dev.yml
